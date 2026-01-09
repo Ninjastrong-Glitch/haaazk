@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HAZKTRANSEDANERS OBFUSCATOR</title>
+
+<style>
+body{
+    background:white;
+    font-family:Arial, sans-serif;
+    text-align:center;
+}
+h1{
+    color:#007BFF;
+    margin-top:30px;
+}
+textarea{
+    width:90%;
+    max-width:700px;
+    height:150px;
+    margin-top:15px;
+    padding:10px;
+    font-size:14px;
+}
+button{
+    margin-top:15px;
+    padding:10px 25px;
+    font-size:16px;
+    border:none;
+    border-radius:5px;
+    background:#007BFF;
+    color:white;
+    cursor:pointer;
+}
+#output,#copyBtn{display:none;}
+#copyBtn{background:#28a745;}
+</style>
+</head>
+
+<body>
+
+<h1>HAZK OBFUSCATOR</h1>
+
+<textarea id="input" placeholder="Masukkan script Lua di sini..."></textarea><br>
+<button onclick="obfuscate()">Obfuscate</button>
+
+<textarea id="output" readonly placeholder="Hasil obfuscator..."></textarea><br>
+<button id="copyBtn" onclick="copy()">Copy</button>
+
+<script>
+function obfuscate(){
+    let text=document.getElementById("input").value;
+    if(!text.trim()){alert("Script kosong");return;}
+
+    let asc="";
+    for(let i=0;i<text.length;i++){
+        asc+="\\"+text.charCodeAt(i);
+    }
+
+    let result =
+`-- [[ICEHUBOBFUSCATOR]]
+local a="${asc.replace(/\\/g,"\\\\")}"
+a=a:gsub("\\\\(%d+)",function(c)return string.char(c)end)
+loadstring(a)()`;
+
+    let out=document.getElementById("output");
+    out.value=result;
+    out.style.display="block";
+    document.getElementById("copyBtn").style.display="inline-block";
+}
+
+function copy(){
+    let o=document.getElementById("output");
+    o.select();
+    document.execCommand("copy");
+    alert("Copied!");
+}
+</script>
+
+</body>
+</html>
